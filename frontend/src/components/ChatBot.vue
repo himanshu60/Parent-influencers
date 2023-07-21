@@ -222,12 +222,14 @@
   .chatbot-body {
     flex: 1;
     overflow-y: scroll;
+    background-image: url(@/assets/chatinput.jpeg);
     padding: 10px;
     display: flex;
     flex-direction: column;
   }
   
   .chat-message {
+    
     margin-bottom: 5px;
     padding: 5px 10px;
     border-radius: 10px;
@@ -247,6 +249,7 @@
   }
   
   .message-text {
+    
     word-break: break-word;
   }
   
@@ -254,6 +257,7 @@
     display: flex;
     align-items: center;
     border-top: 1px solid #ccc;
+    
     padding: 10px;
     position: fixed;
     bottom: 0;

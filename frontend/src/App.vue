@@ -1,6 +1,7 @@
 <template>
   <div>
     <nav>
+      <img src="@/assets/parentchat.png" alt="Logo" class="logo" />
       <router-link to="/" class="nav-link">Home</router-link>
       <router-link v-if="!name" to="/login" class="nav-link" id="login"
           >Login || Signup</router-link
@@ -43,6 +44,13 @@ export default {
 </script>
 
 <style>
+/* body {
+  background-image: url("@/assets/parentbackground.jpeg");
+  
+  background-size: cover;
+  background-repeat: no-repeat;
+ 
+} */
   nav {
     margin-top: -10px;
     width: 100%;
