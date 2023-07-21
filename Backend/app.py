@@ -100,15 +100,15 @@ def login():
 def home():
     return jsonify({"msg": "Home page"})
 
+
 @app.route('/parent', methods=['POST'])
-@check_login_status
-def parent():
+def generate_Pinfluencer():
     keyword = request.json.get('keyword')
     print(keyword)
     
     try:
         def run_prompt():
-            prompt = f"Act as parenting influencer. You provide solutions to all parenting problems, you have to answer in the language in which the user asks you the question. While answering to them reply as human not machine try to replicate the tone of user.\n\nPrompt: My daughter is 19 mnths. But lab usko me koi chi nai deti hu va uski koi zid Puri nai kti hu tou wo mushe hit kart hai She is just 19 mnths. how can I control this behaviour Ya kabhi kabhi wo masti me b muihe hit kar deti hai.\nAnswer: Namaste sir - Aapki beti choti hai. Is umar mein kuch na milne pe kaise behave karna hai bachon ko pata nahin hot. Emotion pe kaabu nahin hota. Lekin bachon ka bhi maarna rok sakte hai. Thoda time laga ke. Kabhi bhi jiss cheez ke live bacha hit kar raha hai woh puri nahin karni kyonki phir bachey ko lagta hai ke maarne se cheez milegi. So a no means a no. But pyaar se. Aap calm aawaaz mein usko bol sakti hai - No using hands and feet. Mujhe lagti hai. Same line hi humein baar baar use karni hai. Phir Aap ski feeling ko acknowledge karo. Ke aapko woh chahiye. Haan? Mujhe pata hai. Mujhe pata hai aapko aacha lagta hai. Lekin maarne se kabhi nahin milega. Aur pun nai kti hu tou Mummy loves you. Ya kabhi kabhi wo Bachon ke nervous system ko touch karke se calmness milti hai. Unko touch karke pyaar se mana karenge to baat samajne ka chance zada hai. Yeh sab karke hum apne bachey ko sikha rahe hai ke how to be in control of their emotions. Yeh important learning sabse pehle maa baap se hi aati hai :-). Lots of love to your family ❤️ \n prompt {keyword} provide me in 100 words"
+            prompt = f"Act as parenting influencer. You provide solutions to all parenting problems, you have to answer in the language in which the user asks you the question. While answering to them reply as human not machine try to replicate the tone of user.\n\nPrompt: My daughter is 19 mnths. But jab usko me koi chij nai deti hu ya uski koi zid Puri nai kti hu tou wo mujhe hit karti haiShe is just 19 mnths..how can I control this behaviourYa kabhi kabhi wo masti me b mujhe hit kar deti hai.I tell her hitting noo..nd wo khud b bolti hai hitting nooo..but not regularly..but spcly wen i dont listen to her. \nAnswer: Namaste sir - Aapki beti choti hai. Is umar mein kuch na milne pe kaise behave karna hai bachon ko pata nahin hot. Emotion pe kaabu nahin hota. Lekin bachon ka bhi maarna rok sakte hai. Thoda time laga ke. Kabhi bhi jiss cheez ke live bacha hit kar raha hai woh puri nahin karni kyonki phir bachey ko lagta hai ke maarne se cheez milegi. So a no means a no. But pyaar se. Aap calm aawaaz mein usko bol sakti hai - No using hands and feet. Mujhe lagti hai. Same line hi humein baar baar use karni hai. Phir Aap ski feeling ko acknowledge karo. Ke aapko woh chahiye. Haan? Mujhe pata hai. Mujhe pata hai aapko aacha lagta hai. Lekin maarne se kabhi nahin milega. Aur pun nai kti hu tou Mummy loves you. Ya kabhi kabhi wo Bachon ke nervous system ko touch karke se calmness milti hai. Unko touch karke pyaar se mana karenge to baat samajne ka chance zada hai. Yeh sab karke hum apne bachey ko sikha rahe hai ke how to be in control of their emotions. Yeh important learning sabse pehle maa baap se hi aati hai :-). Lots of love to your family ❤ \n {keyword}"
             response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=prompt,
@@ -123,6 +123,70 @@ def parent():
     except Exception as e:
         return str(e)
 
+
+
+# fine tuning
+# @app.route('/parent', methods=['POST'])
+# @check_login_status
+# def parent():
+#     keyword = request.json.get('keyword')
+#     print(keyword)
+    
+#     try:
+#         def run_prompt():
+#             prompt = f"prompt: {keyword} "
+#             response = openai.Completion.create(
+#                 model="davinci:ft-personal:output-2023-07-21-15-48-23",  # Replace with your fine-tuned model ID
+#                 prompt=prompt,
+#                 max_tokens=300,
+#                 temperature=1.19,
+#                 stop=None,  # You can specify a stopping condition if needed
+#                 frequency_penalty=0.0,
+#                 presence_penalty=0.0
+#             )
+#             generated_response = response.choices[0].text.strip()
+#             return generated_response
+
+#         response = run_prompt()
+#         return jsonify({'response': response})
+#     except Exception as e:
+#         return str(e)
+    
+
+# @app.route('/parent', methods=['POST'])
+# @check_login_status
+# def test():
+#     prompt = request.json.get('prompt')
+#     # Set your API key here
+#     openai.api_key = os.getenv('OPENAI_API_KEY')
+
+#     response = openai.Completion.create(
+#         model="davinci:ft-personal:output-2023-07-21-15-48-23",  # Replace with your fine-tuned model ID
+#         prompt=prompt,
+#         max_tokens=150,  # You can adjust the max_tokens parameter as needed
+#         temperature=1,  # Adjust the temperature for more random or conservative outputs
+#         stop=None,  # You can specify a stopping condition if needed
+#         frequency_penalty=0.0,
+#         presence_penalty=0.0
+#     )
+#     generated_text = response.choices[0].text.strip()
+
+#     # Print the generated text
+#     return jsonify({"message": generated_text})
+
+
+    
+@app.route('/check')
+def tune_list():
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    response = openai.FineTune.list()
+    return jsonify({"List":response})
+
+@app.route('/rate')
+def training_detail():
+    openai.api_key = os.getenv('OPENAI_API_KEY')
+    response = openai.FineTune.retrieve(id="ft-NeZ8DaVCGUQmcxq4ZZ3AnSmG")
+    return jsonify({"List":response})
 
 if __name__ == '__main__':
     app.run(port=5000)
