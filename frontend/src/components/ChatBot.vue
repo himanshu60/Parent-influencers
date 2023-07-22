@@ -1,145 +1,184 @@
 <template>
-    <div class="chatbot-container">
-      <div class="chats-list">
-        <button @click="newChat">New Conversation</button>
-        <h2>Recent Conversations</h2>
+  <div class="chatbot-container">
+    
+    <div class="chatbot-chat">
+      <div class="chatbot-header">
+        <h1>
+  <span class="parent">Parent</span>-<span class="chat">Chat</span>
+</h1>
+
+      </div>
+      <div class="chatbot-body">
         <div
-          class="chat-summary"
-          v-for="chat in lastChats"
-          :key="chat.id"
-          @click="selectChat(chat.id)"
+          v-for="message in messages"
+          :key="message.id"
+          class="chat-message"
+          :class="{
+            'user-message': message.fromUser,
+            'bot-message': !message.fromUser,
+          }"
         >
-          <p>{{ chat.summary }}</p>
+          <span class="message-text">{{ message.text }}</span>
         </div>
       </div>
-      <div class="chatbot-chat">
-        <div class="chatbot-header">
-          <h1>Parent-Influencers-ChatBot</h1>
-        </div>
-        <div class="chatbot-body">
-          <div
-            v-for="message in messages"
-            :key="message.id"
-            class="chat-message"
-            :class="{
-              'user-message': message.fromUser,
-              'bot-message': !message.fromUser,
-            }"
-          >
-            <span class="message-text">{{ message.text }}</span>
-          </div>
-        </div>
-        <div class="chat-input">
-          <input
-            v-model="newMessage"
-            type="text"
-            placeholder="Type your message here..."
-          />
-          <button @click="sendMessage">Send</button>
-        </div>
+      <div class="chat-input">
+        <input
+          v-model="newMessage"
+          type="text"
+          placeholder="Type your message here..."
+        />
+        <button @click="sendMessage">Send</button>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "ChatBot",
-    data() {
-      return {
-        lastChats: [
-          { id: 1, summary: "mera chota beta bhut presan krta hai?..." },
-          { id: 2, summary: "meri beti 4 saal ki hai bhut jldi gussa ho jati?.." },
-          { id: 3, summary: "JS Learning through ex.." },
-          { id: 4, summary: "React Learning through ex.." },
-          { id: 5, summary: "TS Learning through ex.." },
-        ],
-        messages: [
-          { id: 1, text: "Hello! \n How can I help you?", fromUser: false },
-        ],
-        newMessage: "",
-      };
-    },
-    methods: {
-      newChat() {
-        // Start a new chat
-        this.currentChat = { id: Date.now(), messages: [] };
-      },
-      selectChat(chatId) {
-        // Load the selected chat
-        // For simplicity, we're using a static chat here
-        this.currentChat = {
-          id: chatId,
-          messages: [{ id: 1, text: "Hello!", fromUser: false }],
-        };
-      },
-      sendMessage() {
-        let token = localStorage.getItem("token")
-  
-        if (token) {
-          if (this.newMessage.trim() !== "") {
+  </div>
+</template>
+
+<script>
+export default {
+  name: "ChatBot",
+  data() {
+    return {
+      messages: [
+        { id: 1, text: "Hello! \n How can I help you?", fromUser: false },
+      ],
+      newMessage: "",
+    };
+  },
+  mounted() {
+    // Fetch the data when the component is mounted
+    this.fetchData();
+  },
+  methods: {
+    fetchData() {
+      let token = localStorage.getItem("token");
+      let id = localStorage.getItem("id");
+      fetch(`http://localhost:5000/parent/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Handle the response from the server
+          console.log(data.response);
+          let res = data.response;
+          for (let i = 0; i < res.length; i++) {
             this.messages.push({
               id: this.messages.length + 1,
-              text: this.newMessage,
-              fromUser: true,
+              text: res[i].text,
+              fromUser: res[i].fromuser,
             });
-  
-            fetch("http://localhost:5000/parent", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `${token}`,
-              },
-              body: JSON.stringify({
-                keyword: this.newMessage,
-              }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                // Handle the response from the server
-                console.log(data.response);
-                this.messages.push({
-                  id: this.messages.length + 1,
-                  text: data.response,
-                  fromUser: false,
-                });
-                this.newMessage = "";
-              })
-              .catch((error) => {
-                // Handle any errors that occur during the request
-                console.error(error);
-              });
-            // Your logic for sending the message to the Chatbot and receiving the response can be added here
-            // For simplicity, we're just adding the user's message to the chat here
-            this.newMessage = "";
           }
-        }else{
-          alert("You have to login first")
+          
+          this.newMessage = "";
+        })
+        .catch((error) => {
+          // Handle any errors that occur during the request
+          console.error(error);
+        });
+      // Your logic for sending the message to the Chatbot and receiving the response can be added here
+      // For simplicity, we're just adding the user's message to the chat here
+      this.newMessage = "";
+    },
+    newChat() {
+      // Start a new chat
+      this.currentChat = { id: Date.now(), messages: [] };
+    },
+    selectChat(chatId) {
+      // Load the selected chat
+      // For simplicity, we're using a static chat here
+      this.currentChat = {
+        id: chatId,
+        messages: [{ id: 1, text: "Hello!", fromUser: false }],
+      };
+    },
+    sendMessage() {
+      let token = localStorage.getItem("token");
+      let id = localStorage.getItem("id");
+
+      if (token) {
+        if (this.newMessage.trim() !== "") {
+          this.messages.push({
+            id: this.messages.length + 1,
+            text: this.newMessage,
+            fromUser: true,
+          });
+
+          fetch(`http://localhost:5000/parent/${id}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `${token}`,
+            },
+            body: JSON.stringify({
+              keyword: this.newMessage,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Handle the response from the server
+              console.log(data.response);
+              let res = data.response;
+              this.messages.push({
+                id: this.messages.length + 1,
+                text: res[res.length-1].text,
+                fromUser: res[res.length-1].fromuser,
+              });
+              this.newMessage = "";
+            })
+            .catch((error) => {
+              // Handle any errors that occur during the request
+              console.error(error);
+            });
+          // Your logic for sending the message to the Chatbot and receiving the response can be added here
+          // For simplicity, we're just adding the user's message to the chat here
           this.newMessage = "";
         }
-      },
+      } else {
+        alert("You have to login first");
+        this.newMessage = "";
+      }
     },
-  };
-  </script>
+  },
+};
+</script>
   
   <style>
-  .chatbot-container {
-    display: flex;
-    height: 100%;
-    /* background-image: url('@/assets/inf-background'); */
-    background-size: cover;
-    background-position: center;
+  body{
+    margin: 0;
+    padding: 0;
+    
   }
 
-  .chats-list {
-    flex: 1;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    color: #333; /* Text color */
-    padding: 10px;
+  h1 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Style for the "Parent" word */
+span.parent {
+  color: white; /* Orange color for "Parent" */
+}
+
+/* Style for the "Chat" word */
+span.chat {
+  color: red; /* Dodger blue color for "Chat" */
+}
+
+.chatbot-container {
+    /* Add styles to make it take up 50% of the body screen and center it */
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    animation: fadeInLeft 0.5s ease; /* Add fade-in animation */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 50%; /* 50% of the viewport height */
+    width: 50%;
+    margin:auto;
   }
+
+  
 
   .chat-summary {
     padding: 10px;
@@ -186,7 +225,7 @@
     height: 78vh;
     overflow-y: scroll;
     margin-bottom: 45px;
-    animation: fadeInRight 0.5s ease; /* Add fade-in animation */
+    animation: fadeInRight 0.5s ease; 
   }
 
   @keyframes fadeInLeft {
@@ -212,7 +251,8 @@
   }
   
   .chatbot-header {
-    background-color: teal;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    background-color:rgba(0, 0, 0, 0.491);
     color: #fff;
     padding: 10px;
     display: flex;
@@ -222,7 +262,9 @@
   .chatbot-body {
     flex: 1;
     overflow-y: scroll;
-    background-image: url(@/assets/chatinput.jpeg);
+    background-image: url("https://cdn.dribbble.com/users/2058540/screenshots/8225138/media/af6d6d059328c6f2f9f6e7878c094c7e.gif");
+     background-repeat: no-repeat;
+    background-position: center;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -233,77 +275,143 @@
     margin-bottom: 5px;
     padding: 5px 10px;
     border-radius: 10px;
-    max-width: 70%;
+    max-width: 76%;
   }
   
   .user-message {
-    background-color: #5096e5;
+    background-color: #a92828;
     align-self: flex-end; /* Align user messages to the right side */
     color: #fffbfb; /* Set text color for user messages */
+
+  /* New styles */
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 8px 12px;
   }
   
-  .bot-message {
-    background-color: #8b7070; /* Set background color for bot messages */
-    align-self: flex-start; /* Align bot messages to the left side */
-    color: rgb(255, 255, 255); /* Set text color for bot messages */
-  }
   
-  .message-text {
-    
-    word-break: break-word;
-  }
+  
   
   .chat-input {
-    display: flex;
-    align-items: center;
-    border-top: 1px solid #ccc;
-    
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
-    width: 72%;
-    background-color: #f1f1f1;
-    z-index: 1; /* Set a higher z-index to make it appear above other elements */
-    animation: slideInUp 0.5s ease; /* Add animation */
+  /* Existing styles */
+  display: flex;
+  margin: auto;
+  
+  align-items: center;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 49%;
+  background-color: #f1f1f1;
+  z-index: 1;
+  
+
+  /* New styles */
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* Button hover effect */
+.chat-input button {
+  /* Existing styles */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  background-color: blue;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s ease; /* Add scale effect on hover */
+
+  /* New styles */
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px;
+}
+
+
+
+
+
+/* Animation for container background fading */
+@keyframes fadeInBackground {
+  from {
+    opacity: 0.5;
   }
-  
-  .chat-input input {
-    flex: 1;
-    padding: 5px;
-    border: none;
-    border-radius: 20px;
-    margin-right: 5px;
+  to {
+    opacity: 1;
   }
-  
-  .chat-input button {
-    padding: 5px 15px;
-    border: none;
-    border-radius: 20px;
-    background-color: black;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  /* Media query for smaller screens */
-  @media (max-width: 768px) {
-    .chatbot-container {
-      flex-direction: column;
-    }
-  
-    .chats-list {
-      flex: 1;
-      border-bottom: 1px solid #ccc;
-      margin-bottom: 10px;
-    }
-  
-    .chatbot-chat {
-      flex: 1;
-      margin: 0;
-    }
-  
-    .chat-input {
-      width: 100%; /* Set full width on smaller screens */
-    }
-  }
+}
+
+/* Hover effect for chat summary */
+.chat-summary:hover {
+  background-color: #dcdcdc;
+  border-radius: 10px;
+  transform: scale(1.02); /* Slightly scale the chat summary on hover */
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px; /* Add a subtle shadow on hover */
+}
+
+/* Bot message style with corner cut */
+.bot-message {
+  /* Existing styles */
+  background-color: rgb(4, 4, 241);
+  align-self: flex-start;
+  color: rgb(255, 255, 255);
+
+  /* New styles */
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 8px 12px;
+}
+
+/* Bot message text style */
+.message-text {
+  /* Existing styles */
+  word-break: break-word;
+
+  /* New styles */
+  margin: 0;
+}
+
+/* Hover effect for bot messages */
+.bot-message:hover {
+  background-color: green; /* Slightly darken the background on hover */
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px; /* Add a subtle shadow on hover */
+  transform: scale(1.02); /* Slightly scale the bot message on hover */
+}
+
+.user-message:hover {
+  background-color: rgba(0, 0, 0, 0.854); /* Slightly darken the background on hover */
+  box-shadow: rgba(0, 0, 0, 0.158) 0px 2px 4px; /* Add a subtle shadow on hover */
+  transform: scale(1.02); /* Slightly scale the bot message on hover */
+}
+
+/* Hover effect for chat message */
+.chat-message:hover {
+  transform: translateY(-2px); /* Move the message slightly up on hover */
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px; /* Add a subtle shadow on hover */
+}
+
+/* Hover effect for chat input button */
+.chat-input button:hover {
+  transform: scale(1.1); /* Slightly scale the button on hover */
+  background-color: #444; /* Slightly darken the background on hover */
+}
+
+/* Hover effect for chat summaries */
+.chat-summary:hover {
+  background-color: #dcdcdc;
+  border-radius: 10px;
+  transform: scale(1.02); /* Slightly scale the chat summary on hover */
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px; /* Add a subtle shadow on hover */
+}
+
+/* Hover effect for chatbot-chat */
+.chatbot-chat:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 10px 20px; /* Add a stronger shadow on hover */
+}
+
+/* Hover effect for input field */
+.chat-input input:hover {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px; /* Add a subtle shadow on hover */
+}
   </style>
   

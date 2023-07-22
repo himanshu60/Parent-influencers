@@ -9,7 +9,7 @@
         <router-link v-else to="/" class="nav-link">{{
           name
         }}</router-link>
-      <router-link to="/chatbot" class="nav-link">chatbot</router-link>
+      <router-link to="/chatbot" class="nav-link">Parent-chat</router-link>
       <button v-if="name" @click="logout">Logout</button>
     </nav>
     <router-view></router-view>
@@ -44,18 +44,13 @@ export default {
 </script>
 
 <style>
-/* body {
-  background-image: url("@/assets/parentbackground.jpeg");
-  
-  background-size: cover;
-  background-repeat: no-repeat;
- 
-} */
+
   nav {
-    margin-top: -10px;
+    margin-top: 4px;
     width: 100%;
     height: 70px;
     display: flex;
+    border-radius: 10px;
     background-color: white; /* Light gray background color */
     justify-content: space-evenly;
     margin-bottom: 20px;
@@ -67,15 +62,22 @@ export default {
     text-decoration: none;
     color: black; /* Text color */
     text-align: center;
+    margin: 25px;
+    padding: 30px;
     font-size: 20px;
     font-weight: 600;
     padding: 10px; /* Add some padding around the nav items */
     transition: background-color 0.3s ease-in-out; /* Add a smooth background color transition */
   }
+  .logo{
+    height: 50px;
+    width: 95px;
+  }
 
   .nav-link:hover {
-    background-color: orangered; /* Light gray background on hover */
+    background-color: limegreen; /* Light gray background on hover */
     border-radius: 4px; /* Add rounded corners on hover */
+    color: white;
   }
 
   .nav-link.active {
@@ -94,5 +96,46 @@ export default {
   nav button:hover {
     transform: scale(1.05); /* Slightly scale the logout button on hover */
   }
+
+  /* Small screens (mobile phones) */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column; /* Stack the nav items vertically */
+    height: auto; /* Adjust the height to fit the content */
+    box-shadow: none; /* Remove the box-shadow on small screens */
+  }
+
+  .nav-link {
+    margin: 5px; /* Reduce the margin between nav items */
+    padding: 5px; /* Reduce the padding around nav items */
+    font-size: 16px; /* Decrease the font size for smaller screens */
+  }
+}
+
+/* Medium screens (tablets and small laptops) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  nav {
+    justify-content: center; /* Center the nav items horizontally */
+  }
+
+  .nav-link {
+    margin: 15px; /* Increase the margin between nav items */
+    padding: 15px; /* Increase the padding around nav items */
+    font-size: 18px; /* Increase the font size for medium screens */
+  }
+}
+
+/* Large screens (desktops and larger laptops) */
+@media (min-width: 1025px) {
+  nav {
+    justify-content: space-evenly; /* Revert to original justify-content */
+    height: 70px; /* Revert to original height */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; /* Revert to original box-shadow */
+  }
+
+  .nav-link {
+    font-size: 20px; /* Revert to original font size for large screens */
+  }
+}
 </style>
 
