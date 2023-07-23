@@ -108,9 +108,9 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           // Handle the response from the server
-          
+
           alert("Registered Sucessfully");
-          
+
           console.log(data);
         })
         .catch((error) => {
@@ -158,8 +158,25 @@ export default {
 </script>
 
 <style>
-body{
+/* body {
   background-image: url(@/assets/k.jpg);
+} */
+#main {
+  /* ... (existing styles) ... */
+  /* Add gradient background to the main container */
+  background: linear-gradient(135deg, #f0f2f5, #d1d8e3);
+}
+
+/* Apply gradient background to the buttons */
+.btn {
+  /* ... (existing styles) ... */
+  background: linear-gradient(45deg, #1877f2, #3b5998);
+}
+
+/* Apply gradient background to the submit button */
+.submit-button {
+  /* ... (existing styles) ... */
+  background: linear-gradient(45deg, #1877f2, #3b5998);
 }
 #main {
   width: 30%;
