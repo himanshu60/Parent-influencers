@@ -7,7 +7,7 @@ such as sharing parenting tips, product recommendations, family activities, and 
 
 ## Deployed Link :
 
-   - Frontend - https://voluble-bonbon-2e3a00.netlify.app/
+   - Frontend - https://parent-influencers-frontend.vercel.app/
   
 
 
