@@ -1,7 +1,7 @@
 # Parent-chat-influencers
-A parent influencer is a parent who has a significant impact on other people, especially other parents,
-through social media and online platforms. They use their personal experiences, advice, and recommendations to influence and inspire others in various aspects of parenting,
-such as sharing parenting tips, product recommendations, family activities, and more.
+A parent influencer is a parent who has a significant impact on other people, especially other parents, through social media and online platforms. They use their personal experiences, advice, and recommendations to influence and inspire others in various aspects of parenting,
+such as sharing parenting tips, product recommendations, family activities, and more. So I am creating a web application using Generative AI for asking questions and answering.
+
 
 <br>
 
