@@ -43,7 +43,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 # Site Map for Parent-Chat-Influencers
 
-![flow-chat-parent app](https://github.com/himanshu60/Parent-influencers/assets/65457075/3af88e18-b200-4981-97ca-2081ce3f0675)
+![flow-chat-parent app](https://github.com/himanshu60/Parent-influencers/assets/65457075/dcca7e51-9ee6-4ebd-aeef-e7ed7d36b63a)
+
 
 
 
@@ -121,20 +122,25 @@ Node Modules: bcrypt | cors | dotenv | jsonwebtoken
 
 ## Home Page
 
-![home-parent](https://github.com/himanshu60/Parent-influencers/assets/65457075/109bc4ff-935b-4694-8eb2-398961c60075)
+![home-parent](https://github.com/himanshu60/Parent-influencers/assets/65457075/95bc168a-dc43-4744-8694-786a31988016)
+
 
 
 ## SignUp Page
 
-![login-signup-parent](https://github.com/himanshu60/Parent-influencers/assets/65457075/9440d6ce-7506-4f4e-81ff-bf6684ed16ab)
+![login-signup-parent](https://github.com/himanshu60/Parent-influencers/assets/65457075/e53fb7b8-2389-4d5c-813b-d2493462835f)
+
 
 ## Login Page
-![login-parent](https://github.com/himanshu60/Parent-influencers/assets/65457075/498eb6e8-0551-42ed-a6e6-185888cf214a)
+
+![login-parent](https://github.com/himanshu60/Parent-influencers/assets/65457075/348255a1-9b18-486d-9ee6-534ad1df8fe8)
 
 
 ## View Parent-chat Page
-![parent-chat-conversation-without-login](https://github.com/himanshu60/Parent-influencers/assets/65457075/e43a8dcc-83b1-47c9-897a-b87b62ece958)
-![parent-chat-with-conversation](https://github.com/himanshu60/Parent-influencers/assets/65457075/5b8ab356-deb0-43d9-906f-7a5bb971fdcb)
-![with-conversation](https://github.com/himanshu60/Parent-influencers/assets/65457075/03180e78-e226-49b2-8adf-2a0f41d68746)
+![parent-chat-conversation-without-login](https://github.com/himanshu60/Parent-influencers/assets/65457075/58b95c7c-32e3-45bd-b682-08b57c86c385)
+![parent-chat-with-conversation](https://github.com/himanshu60/Parent-influencers/assets/65457075/5ae03492-7f6f-446d-9ca7-6b6ff2d20d97)
+![with-conversation](https://github.com/himanshu60/Parent-influencers/assets/65457075/b46294ce-607d-45b4-9f75-6b8e318d2d55)
+
+
 
 
